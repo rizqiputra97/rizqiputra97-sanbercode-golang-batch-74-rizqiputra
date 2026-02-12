@@ -8,6 +8,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
+	"bioskop-app/handlers"
+	
 )
 
 // Struct Bioskop
@@ -85,4 +87,16 @@ func createBioskop(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, input)
+
+	handlers.SetDB(db)
+
+	r := gin.Default()
+
+	r.POST("/bioskop", handlers.CreateBioskop)
+	r.GET("/bioskop", handlers.GetAllBioskop)
+	r.GET("/bioskop/:id", handlers.GetBioskopByID)
+	r.PUT("/bioskop/:id", handlers.UpdateBioskop)
+	r.DELETE("/bioskop/:id", handlers.DeleteBioskop)
+
+	r.Run(":8080")
 }
